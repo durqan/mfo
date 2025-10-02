@@ -1,10 +1,11 @@
 import './bootstrap';
-import { createApp } from 'vue';
+import {createApp, h} from 'vue';
+import {createInertiaApp} from '@inertiajs/inertia-vue3'
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-import AppView from './components/view.vue';
+import AppComponent from './components/app.vue';
 import MainPageView from './components/main-page/view.vue';
 import MainPageSlider from './components/main-page/slider.vue';
 import SendLoanButton from './components/main-page/send-loan-button.vue';
@@ -20,28 +21,34 @@ import AuthModal from './components/auth-modal.vue';
 import PersonalPageView from './components/personal-pages/view.vue';
 import PersonalOrderView from './components/personal-pages/order.vue';
 
-const app = createApp({});
+import {InertiaProgress} from "@inertiajs/progress";
 
-app.use(VueSweetalert2);
+InertiaProgress.init();
 
-app.component('app-view', AppView);
-app.component('MainPageView', MainPageView);
-app.component('MainPageSlider', MainPageSlider);
-app.component('SendLoanButton', SendLoanButton);
-app.component('MainPageCarousel', MainPageCarousel);
-app.component('MainPageQuestions', MainPageQuestions);
-app.component('MainPageQuestions', MainPageQuestions);
-app.component('MainPageFooter', MainPageFooter);
-
-app.component('LoanPageView', LoanPageView);
-app.component('LoanPageHeader', LoanPageHeader);
-app.component('LoanPageFooter', LoanPageFooter);
-app.component('StepContacts', StepContacts);
-app.component('Agreements', Agreements);
-
-app.component('AuthModal', AuthModal);
-
-app.component('PersonalPageView', PersonalPageView);
-app.component('PersonalOrderView', PersonalOrderView);
-
-app.mount('#app');
+createInertiaApp({
+    resolve: name => {
+        const pages = import.meta.glob('./components/**/*.vue', {eager: true})
+        return pages[`./components/${name}.vue`]
+    },
+    setup({el, App, props, plugin}) {
+        createApp({render: () => h(App, props)})
+            .use(plugin)
+            .use(VueSweetalert2)
+            .component('AppComponent', AppComponent)
+            .component('MainPageView', MainPageView)
+            .component('MainPageSlider', MainPageSlider)
+            .component('SendLoanButton', SendLoanButton)
+            .component('MainPageCarousel', MainPageCarousel)
+            .component('MainPageQuestions', MainPageQuestions)
+            .component('MainPageFooter', MainPageFooter)
+            .component('LoanPageView', LoanPageView)
+            .component('LoanPageHeader', LoanPageHeader)
+            .component('LoanPageFooter', LoanPageFooter)
+            .component('StepContacts', StepContacts)
+            .component('Agreements', Agreements)
+            .component('AuthModal', AuthModal)
+            .component('PersonalPageView', PersonalPageView)
+            .component('PersonalOrderView', PersonalOrderView)
+            .mount(el)
+    }
+})

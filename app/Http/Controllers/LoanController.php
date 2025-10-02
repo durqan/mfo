@@ -9,12 +9,13 @@ use App\Models\Loans;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class LoanController extends Controller
 {
     public function view()
     {
-        return view('view', ['title' => 'Заявка', 'component' => 'loan']);
+        return Inertia::render('app', ['title' => 'Заявка', 'component' => 'loan']);
     }
     public function add(AddLoanFormRequest $request)
     {
