@@ -8,6 +8,6 @@ class MainController extends Controller
 {
     public function main_page()
     {
-        return view('main_page');
+        return view('view', ['title' => 'Добро пожаловать', 'component' => 'main']);
     }
 }

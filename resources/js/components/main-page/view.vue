@@ -18,7 +18,8 @@ export default {
                 step: 500,
                 val: 5000,
                 finalVal: 5000
-            }
+            },
+            isModalVisible: false
         }
     },
     methods: {
@@ -47,7 +48,8 @@ export default {
             </div>
             <div style="width: 20%">
                 <div class="btn btn-light">Оплатить</div>
-                <div class="btn btn-light ms-3">Войти</div>
+                <div class="btn btn-light ms-3" @click="isModalVisible = true">Войти</div>
+                <AuthModal :visible="isModalVisible" @close="isModalVisible = false"/>
             </div>
         </div>
         <div class="main">
