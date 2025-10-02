@@ -18,8 +18,12 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
+        'patronymic',
         'email',
+        'sex',
+        'phone',
         'password',
     ];
 
@@ -44,5 +48,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function reg_address()
+    {
+        return $this->hasOne(Addresses::class, 'id', 'reg_addresses_id');
+    }
+    public function fakt_address()
+    {
+        return $this->hasOne(Addresses::class, 'id', 'fakt_addresses_id');
     }
 }

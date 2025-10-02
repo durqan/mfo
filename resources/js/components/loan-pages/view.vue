@@ -1,15 +1,24 @@
 <script>
-import Contact_information from "@/components/loan-pages/steps/contact_information.vue";
+import Contacts from "./steps/contacts.vue";
+import Passport from "./steps/passport.vue";
+import Address from "./steps/address.vue";
+import Final from "./steps/final.vue";
 
 export default {
     data() {
         return {
-            currentTab: 0,
+            tab: {
+                current: 0
+            },
             tabs: [
-                { title: 'Контактная информация', component: Contact_information },
-                { title: 'Паспорт и адрес', component: 'PassportAddress' },
-                { title: 'Общие сведения', component: 'GeneralInfo' }
-            ]
+                {title: 'Контактная информация', component: Contacts},
+                {title: 'Паспорт', component: Passport},
+                {title: 'Адрес', component: Address},
+                {title: 'Общие сведения', component: Final}
+            ],
+            user: {
+                id: null
+            }
         };
     }
 };
@@ -20,17 +29,18 @@ export default {
         <div class="tabs">
             <div class="tabs-nav">
                 <button
-                    v-for="(tab, index) in tabs"
+                    v-for="(curTab, index) in tabs"
                     :key="index"
-                    :class="{ active: currentTab === index }"
-                    @click="currentTab = index">
-                    {{ tab.title }}
+                    :class="{ active: tab.current === index }">
+                    {{ curTab.title }}
                 </button>
             </div>
             <div class="tabs-content">
                 <component
-                    :is="tabs[currentTab].component"
-                    v-if="tabs[currentTab]"
+                    :user="user"
+                    :is="tabs[tab.current].component"
+                    :tab="tab"
+                    v-if="tabs[tab.current]"
                 ></component>
             </div>
         </div>
@@ -52,7 +62,7 @@ export default {
     padding: 10px 20px;
     border: none;
     background: transparent;
-    cursor: pointer;
+    cursor: default !important;
 }
 
 .tabs-nav button.active {
